@@ -2,15 +2,14 @@
 
 open Big_int
 
-let fib =
+let fib_iter cnt callback =
 	let a = ref (big_int_of_int 1) and 
 		b = ref (big_int_of_int 1) and 
 		c = ref (big_int_of_int 0) in
-	fun cnt callback ->
-		for i = 0 to (cnt - 1) do 
-			if i < 2 then callback !a
-			else (c := !a; a := add_big_int !a !b; b := !c; callback !a);
-		done;
+	for i = 0 to (cnt - 1) do 
+		if i < 2 then callback !a
+		else (c := !a; a := add_big_int !a !b; b := !c; callback !a);
+	done;
 ;;
 
 let calc_freq arr n = 
@@ -28,7 +27,7 @@ let () = (
 	Printf.printf "Enter max fibonacci number count [1...] : %!";
 	let fib_cnt = try Some (int_of_string (input_line stdin)) with Failure "int_of_string" -> None in
 	match fib_cnt with 
-		| Some n when n > 0 ->	(fib n (calc_freq arr); print_freqs arr n)
+		| Some cnt when cnt > 0 ->	(fib_iter cnt (calc_freq arr); print_freqs arr cnt)
 		| None | Some _ -> print_endline "Enter positive integer number, please..."
 	)
 ;;
