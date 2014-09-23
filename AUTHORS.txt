@@ -1,0 +1,8 @@
+(* OASIS_START *)
+(* DO NOT EDIT (digest: 0f834239a12d3070ca573f18778bb8da) *)
+
+Authors of benford's law test:
+
+* tvolf
+
+(* OASIS_STOP *)

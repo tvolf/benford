@@ -1,0 +1,20 @@
+OASISFormat: 0.4
+Name:        benford's law test
+Version:     1.0.0
+Synopsis:    benford's law test check
+Authors:     tvolf
+License:     LGPL-2.1 with OCaml linking exception
+Plugins:     META (0.4), StdFiles (0.4), DevFiles (0.4)
+BuildDepends: num  
+
+Executable benford
+  Path:       .
+  BuildTools: ocamlbuild
+  MainIs:     benford.ml
+  CompiledObject: native  
+
+  
+PostBuildCommand: cp _build/benford.native ./benford.exe
+
+
+  
