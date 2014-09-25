@@ -4,20 +4,25 @@ open Big_int
 
 let make_fib_stream () = 
 	let a = ref (big_int_of_int 0) and 
-		b = ref (big_int_of_int 1) and 
-		c = ref (big_int_of_int 0) and 
-		cnt = ref 0 in
-	fun max_cnt ->
-		Stream.from 
-		(fun _ -> 
-			if !cnt = max_cnt then None 
-			else (c := !a; 
-				  a := add_big_int !a !b; 
-				  b := !c; 
-				  cnt := !cnt + 1;
-				  Some !a);
-		)
+		b = ref (big_int_of_int 1) in
+	Stream.from 
+	(fun _ -> 
+		let sum = add_big_int !a !b in   
+		(b := !a; 
+ 		 a := sum; 
+		 Some !a);
+	)
 ;;
+
+let stream_take stream_in n =
+    let cnt = ref n in 
+	fun () -> 	
+		Stream.from 
+		(fun _ -> 	
+			if !cnt <= 0 then None 
+			else (cnt := !cnt - 1; Some (Stream.next stream_in))
+		)
+;;		
 
 
 let add_one_fib arr n = 
@@ -37,12 +42,16 @@ let print_freqs arr cnt =
 let () = (
 	let arr = Array.make 10 0 in
 	Printf.printf "Enter max fibonacci number count [1...] : %!";
-	let fib_stream = make_fib_stream () in 
+	let fib_stream_all = make_fib_stream () in 
 	let fib_cnt = try 
 					Some (int_of_string (input_line stdin)) 
-				  with Failure "int_of_string" -> None in
+				  with 
+					Failure "int_of_string" -> None in
 	match fib_cnt with 
-		| Some cnt when cnt > 0 ->	(fill_arr arr (fib_stream cnt); print_freqs arr cnt)
+		| Some cnt when cnt > 0 ->	
+			let stream = stream_take fib_stream_all cnt () in 
+			(fill_arr arr stream;
+			 print_freqs arr cnt)
 		| None | Some _ -> print_endline "Enter positive integer number, please..."
 	)
 ;;
