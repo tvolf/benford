@@ -14,7 +14,7 @@ let make_fib_stream () =
 	)
 ;;
 
-let stream_take stream_in n =
+let stream_take n stream_in =
     let cnt = ref n in 
 	fun () -> 	
 		Stream.from 
@@ -49,7 +49,7 @@ let () = (
 					Failure "int_of_string" -> None in
 	match fib_cnt with 
 		| Some cnt when cnt > 0 ->	
-			let stream = stream_take fib_stream_all cnt () in 
+			let stream = stream_take cnt fib_stream_all () in 
 			(fill_arr arr stream;
 			 print_freqs arr cnt)
 		| None | Some _ -> print_endline "Enter positive integer number, please..."
