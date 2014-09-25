@@ -2,7 +2,7 @@
 
 open Big_int
 
-let fib_stream  = 
+let make_fib_stream () = 
 	let a = ref (big_int_of_int 0) and 
 		b = ref (big_int_of_int 1) and 
 		c = ref (big_int_of_int 0) and 
@@ -26,7 +26,7 @@ let add_one_fib arr n =
 ;;	
 
 let fill_arr arr stream = 
-	Stream.iter (fun fib -> (add_one_fib arr) fib) stream
+	Stream.iter (fun fib -> add_one_fib arr fib) stream
 ;;	
 
 let print_freqs arr cnt = 
@@ -37,6 +37,7 @@ let print_freqs arr cnt =
 let () = (
 	let arr = Array.make 10 0 in
 	Printf.printf "Enter max fibonacci number count [1...] : %!";
+	let fib_stream = make_fib_stream () in 
 	let fib_cnt = try 
 					Some (int_of_string (input_line stdin)) 
 				  with Failure "int_of_string" -> None in
